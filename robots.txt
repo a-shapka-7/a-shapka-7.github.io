@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://твой_домен/sitemap.xml
+Sitemap: https://a-shapka.ru//sitemap.xml
