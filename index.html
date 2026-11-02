@@ -3,35 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Анастасия Шапка — Психолог, парный и секс-терапевт</title>
+    <title>Анастасия Шапка — Клиническая психологиня и секс-терапевтка</title>
+    
+    <!-- Фирменный векторный SVG-значок (Favicon) в палитре проекта -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c2722'/%3E%3Cpath d='M16 4 Q16 16 28 16 Q16 16 16 28 Q16 16 4 16 Q16 16 16 4 Z' fill='%23d97757'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23bdddd0'/%3E%3C/svg%3E">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & Cormorant Garamond -->
+    
+    <!-- Единый типографический стиль: шрифт Onest -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['"Onest"', 'sans-serif'],
                     },
                     colors: {
                         forest: {
-                            50: '#F4F7F5',   /* Main soft sage mist background */
-                            100: '#E6EFEA',  /* Soft accent surface / pills */
-                            200: '#CFE0D7',  /* Subtle borders */
-                            300: '#A9C5B8',
-                            500: '#496E5E',
-                            600: '#2E5244',
-                            700: '#1E3F35',  /* Secondary deep green */
-                            800: '#132A23',  /* Primary deep pine/emerald green */
-                            900: '#0C1C17',  /* Deepest ink green */
+                            DEFAULT: '#1c2722',
+                            deep: '#141d19',
+                            card: '#22322c',
+                            cardHover: '#293b34',
+                            border: '#354d44',
+                            borderLight: '#436156',
+                        },
+                        sage: {
+                            DEFAULT: '#3e7564',
+                            light: '#bdddd0',
+                            muted: '#739889',
+                        },
+                        terracotta: {
+                            DEFAULT: '#d97757',
+                            hover: '#e28a6e',
+                            active: '#c26445',
+                        },
+                        linen: '#f0f5f2'
+                    },
+                    animation: {
+                        'twinkle-slow': 'twinkle 4.5s ease-in-out infinite',
+                        'twinkle-mid': 'twinkle 3.2s ease-in-out infinite',
+                        'twinkle-fast': 'twinkle 2.4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        twinkle: {
+                            '0%, 100%': { opacity: '0.15', transform: 'scale(0.85)' },
+                            '50%': { opacity: '0.75', transform: 'scale(1.15)' },
                         }
                     }
                 }
@@ -40,715 +64,874 @@
     </script>
     <style>
         body {
-            background-color: #F4F7F5;
-            color: #0C1C17;
+            background-color: #1c2722;
+            color: #f0f5f2;
+            font-family: 'Onest', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        .serif-italic {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-        }
-        .tab-content {
-            animation: fadeIn 0.22s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* Стилизация скроллбара */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 7px;
         }
         ::-webkit-scrollbar-track {
-            background: #F4F7F5;
+            background: #141d19;
         }
         ::-webkit-scrollbar-thumb {
-            background: #A9C5B8;
-            border-radius: 3px;
+            background: #354d44;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3e7564;
+        }
+
+        /* Бесшовное переключение табов без скачков высоты страницы */
+        .tab-stack-container {
+            display: grid;
+        }
+        .tab-stack-panel {
+            grid-area: 1 / 1;
+            transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-stack-panel.tab-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px);
+            visibility: hidden;
+        }
+        .tab-stack-panel.tab-visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+            visibility: visible;
         }
     </style>
 </head>
-<body class="selection:bg-forest-200 selection:text-forest-900">
+<body class="selection:bg-terracotta selection:text-white relative overflow-x-hidden min-h-screen">
 
-    <!-- STICKY HEADER -->
-    <header class="sticky top-0 z-40 bg-forest-50/90 backdrop-blur-md border-b border-forest-200/70 transition-all">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2.5">
-                <span class="font-medium tracking-tight text-forest-900 text-base sm:text-lg">
+    <!-- ========================================================
+         ДЕЛИКАТНЫЙ ФОН ИЗ 4-КОНЕЧНЫХ ЗВЕЗД В ФИРМЕННЫХ ТОНАХ
+         ======================================================== -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none" aria-hidden="true">
+        <svg class="absolute top-[7%] left-[6%] w-3.5 h-3.5 text-sage-muted/35 fill-current animate-twinkle-slow" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 2 12 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute top-[13%] left-[27%] w-2.5 h-2.5 text-sage-muted/25 fill-current animate-twinkle-mid" style="animation-delay: 1.1s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 2 12 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute top-[10%] right-[11%] w-4 h-4 text-sage-muted/40 fill-current animate-twinkle-fast" style="animation-delay: 0.5s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute top-[21%] right-[24%] w-3 h-3 text-sage-muted/25 fill-current animate-twinkle-slow" style="animation-delay: 1.9s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+
+        <svg class="absolute top-[39%] left-[4%] w-3 h-3 text-sage-muted/30 fill-current animate-twinkle-mid" style="animation-delay: 1.4s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 2 12 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute top-[45%] right-[5%] w-3.5 h-3.5 text-sage-muted/35 fill-current animate-twinkle-slow" style="animation-delay: 2.6s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute top-[57%] left-[9%] w-2.5 h-2.5 text-sage-muted/25 fill-current animate-twinkle-fast" style="animation-delay: 0.2s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute top-[63%] right-[13%] w-3 h-3 text-sage-muted/30 fill-current animate-twinkle-mid" style="animation-delay: 1.7s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+
+        <svg class="absolute top-[77%] left-[5%] w-3.5 h-3.5 text-sage-muted/35 fill-current animate-twinkle-slow" style="animation-delay: 1.2s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute top-[85%] right-[8%] w-2.5 h-2.5 text-sage-muted/25 fill-current animate-twinkle-fast" style="animation-delay: 2.2s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute bottom-16 left-[15%] w-3 h-3 text-sage-muted/30 fill-current animate-twinkle-mid" style="animation-delay: 0.8s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+        <svg class="absolute bottom-24 right-[19%] w-2.5 h-2.5 text-sage-muted/25 fill-current animate-twinkle-slow" style="animation-delay: 2.0s;" viewBox="0 0 24 24">
+            <path d="M12 2 Q12 12 22 12 Q12 12 12 22 Q12 12 12 22 Q12 12 12 2 Z" />
+        </svg>
+    </div>
+
+    <!-- ========================================================
+         1. ФИКСИРОВАННАЯ ШАПКА
+         ======================================================== -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-forest/90 backdrop-blur-md border-b border-forest-border/60 transition-all">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6 h-20 flex items-center justify-between relative z-10">
+            
+            <a href="#" class="flex flex-col group justify-center">
+                <span class="font-medium text-base sm:text-lg tracking-tight text-linen group-hover:text-terracotta transition-colors">
                     Анастасия Шапка
                 </span>
-                <span class="hidden md:inline-block w-1 h-1 rounded-full bg-forest-600"></span>
-                <span class="hidden md:inline-block text-xs text-forest-600 font-normal">
-                    Психолог, парный и секс-терапевт
+                <span class="text-xs text-sage-light/80 font-light tracking-wide">
+                    Клиническая психологиня и секс-терапевтка
                 </span>
             </a>
 
-            <!-- Desktop Nav -->
-            <nav class="hidden sm:flex items-center gap-7 text-sm text-forest-700/80">
-                <a href="#requests" class="hover:text-forest-900 transition-colors">Запросы</a>
-                <a href="#methods" class="hover:text-forest-900 transition-colors">Как устроена работа</a>
-                <a href="#pricing" class="hover:text-forest-900 transition-colors">Формат и стоимость</a>
-                <a href="#faq" class="hover:text-forest-900 transition-colors">Детали</a>
+            <nav class="hidden md:flex items-center gap-7 lg:gap-8 text-sm text-sage-light font-normal">
+                <a href="#requests" class="hover:text-terracotta transition-colors py-1">С чем работаю</a>
+                <a href="#method" class="hover:text-terracotta transition-colors py-1">Метод</a>
+                <a href="#education" class="hover:text-terracotta transition-colors py-1">Образование</a>
+                <a href="#pricing" class="hover:text-terracotta transition-colors py-1">Формат и цены</a>
             </nav>
 
-            <!-- CTA Button -->
-            <button onclick="openBookingModal()" class="bg-forest-800 hover:bg-forest-700 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-full transition-all flex items-center gap-1.5 shadow-2xs">
+            <button onclick="openBookingModal()" class="bg-terracotta hover:bg-terracotta-hover active:bg-terracotta-active text-white text-xs sm:text-sm font-medium px-5 sm:px-6 py-2.5 rounded-full transition-all duration-200 flex items-center gap-1.5 shadow-md shadow-black/30 hover:-translate-y-0.5 active:scale-95 cursor-pointer">
                 <span>Записаться</span>
-                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
             </button>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 pb-24">
+    <!-- ========================================================
+         ОСНОВНОЙ КОНТЕНТ
+         ======================================================== -->
+    <main class="pt-28 pb-24 max-w-6xl mx-auto px-5 sm:px-6 space-y-24 sm:space-y-28 relative z-10">
 
-        <!-- 1. HERO SECTION -->
-        <section class="py-12 sm:py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <!-- ========================================================
+             2. HERO СЕКЦИЯ С ФОТОГРАФИЕЙ И ЛИНЕЙНЫМИ ИКОНКАМИ
+             ======================================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center pt-4 sm:pt-8">
             
-            <!-- Left Column -->
             <div class="lg:col-span-7 space-y-6">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest-100 border border-forest-200 text-forest-800 text-xs font-medium">
-                    <span class="w-1.5 h-1.5 rounded-full bg-forest-700"></span>
-                    <span>Онлайн-консультации • Индивидуально и с парами</span>
+                
+                <div class="flex items-center">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest-card border border-forest-border text-sage-light text-xs font-medium">
+                        <i data-lucide="check" class="w-3.5 h-3.5 text-terracotta"></i>
+                        <span>Доказательная база</span>
+                    </div>
                 </div>
 
-                <h1 class="text-3xl sm:text-5xl font-light tracking-tight text-forest-900 leading-[1.15]">
-                    Бережное пространство для контакта <span class="serif-italic font-normal text-4xl sm:text-6xl text-forest-700">с собой и/или партнером</span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-medium text-linen tracking-tight leading-[1.18]">
+                    Бережное пространство для контакта с собой и партнером
                 </h1>
 
-                <p class="text-forest-800/80 text-base sm:text-lg font-light leading-relaxed max-w-xl">
-                    Помогаю справляться с разными состояниями, кризисами в отношениях и трудностями в сексуальной сфере — с опорой на клиническую базу и ваши ценности.
+                <p class="text-sage-light/90 text-base sm:text-lg font-light leading-relaxed max-w-xl">
+                    Помогаю справляться со сложными состояниями с опорой на клиническую базу, ваши ценности и научно обоснованные подходы: <strong class="text-linen font-medium">ACT</strong> (Терапия принятия и ответственности) и <strong class="text-linen font-medium">ЭФТ</strong> (Эмоционально-фокусированная терапия).
                 </p>
 
-                <!-- Professional Grounded Badges (Safe for RU legal context) -->
-                <div class="flex flex-wrap gap-2 pt-1">
-                    <span class="inline-flex items-center gap-1.5 text-xs text-forest-800 bg-white px-3 py-1.5 rounded-lg border border-forest-200/80">
-                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-forest-600"></i>
-                        Доказательный подход (ACT, ЭФТ)
-                    </span>
-                    <span class="inline-flex items-center gap-1.5 text-xs text-forest-800 bg-white px-3 py-1.5 rounded-lg border border-forest-200/80" title="Принятие любого жизненного опыта и идентичности без осуждения и стереотипов">
-                        <i data-lucide="shield" class="w-3.5 h-3.5 text-forest-600"></i>
-                        Фем-оптика и инклюзивность
-                    </span>
-                    <span class="inline-flex items-center gap-1.5 text-xs text-forest-800 bg-white px-3 py-1.5 rounded-lg border border-forest-200/80">
-                        <i data-lucide="lock" class="w-3.5 h-3.5 text-forest-600"></i>
-                        Конфиденциально
-                    </span>
+                <!-- Единый стиль линейных иконок Lucide -->
+                <div class="flex flex-wrap gap-2.5 pt-1 text-xs text-sage-light font-light">
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-forest-card border border-forest-border">
+                        <i data-lucide="check" class="w-3.5 h-3.5 text-terracotta"></i>
+                        <span>Фем-оптика и инклюзивность</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-forest-card border border-forest-border">
+                        <i data-lucide="check" class="w-3.5 h-3.5 text-terracotta"></i>
+                        <span>Индивидуально и для союзов</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-forest-card border border-forest-border">
+                        <i data-lucide="lock" class="w-3.5 h-3.5 text-terracotta"></i>
+                        <span>Конфиденциальность и этика</span>
+                    </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="pt-3 flex flex-col sm:flex-row sm:items-center gap-3">
-                    <button onclick="openBookingModal()" class="bg-forest-800 hover:bg-forest-700 text-white text-sm font-medium px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 group shadow-sm">
+                <div class="pt-2">
+                    <button onclick="openBookingModal()" class="w-full sm:w-auto bg-terracotta hover:bg-terracotta-hover active:bg-terracotta-active text-white text-sm font-semibold px-8 py-4 rounded-full transition-all duration-200 flex items-center justify-center gap-2.5 shadow-lg shadow-black/30 hover:-translate-y-0.5 active:scale-95 cursor-pointer">
                         <span>Записаться на консультацию</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform"></i>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </button>
-                    <a href="#pricing" class="bg-white hover:bg-forest-100 text-forest-800 border border-forest-200 text-sm font-medium px-5 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <span>Формат и стоимость</span>
-                    </a>
                 </div>
             </div>
 
-            <!-- Right Column: Minimalist Portrait Frame -->
-            <div class="lg:col-span-5">
-                <div class="relative mx-auto max-w-sm lg:max-w-none">
-                    <!-- Deep green subtle decorative backdrop -->
-                    <div class="absolute -inset-2 bg-forest-200/60 rounded-3xl rotate-1"></div>
+            <!-- Фотография Анастасии (с котом) -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-end">
+                <div class="relative w-full max-w-[380px] sm:max-w-[400px] h-[480px] sm:h-[510px] rounded-3xl overflow-hidden shadow-2xl border border-forest-border bg-forest-card group">
+                    <img src="IMG_5328.jpg" 
+                         alt="Анастасия Шапка с котом" 
+                         onerror="if(this.src.indexOf('IMG_5328_2.jpg')===-1){this.src='IMG_5328_2.jpg';}else{this.onerror=null; this.src='https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=80';}"
+                         class="w-full h-full object-cover object-top filter contrast-[0.98] brightness-95 transition-transform duration-500 group-hover:scale-[1.02]">
                     
-                    <div class="relative bg-white p-3 rounded-2xl border border-forest-200 shadow-xs">
-                        <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-forest-100 flex flex-col items-center justify-center">
-                            <img id="therapist-photo" 
-                                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80" 
-                                 alt="Анастасия Шапка" 
-                                 class="w-full h-full object-cover object-center contrast-[0.98] transition-all duration-500"
-                                 onerror="this.src='https://placehold.co/600x750/E6EFEA/132A23?text=Анастасия+Шапка'">
-
-                            <label for="photo-upload" class="cursor-pointer absolute bottom-3 right-3 bg-white/95 hover:bg-white backdrop-blur-md text-forest-900 text-xs px-3 py-1.5 rounded-lg border border-forest-200 shadow-xs flex items-center gap-1.5 transition-all">
-                                <i data-lucide="camera" class="w-3.5 h-3.5 text-forest-700"></i>
-                                <span>Загрузить своё фото</span>
-                            </label>
-                            <input type="file" id="photo-upload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
-                        </div>
-
-                        <div class="pt-3 pb-1 px-1 flex items-center justify-between text-xs text-forest-600">
-                            <span class="font-medium text-forest-900">Анастасия Шапка</span>
-                            <span>Психолог • Сексолог</span>
+                    <div class="absolute inset-0 bg-gradient-to-t from-forest-deep via-forest/20 to-transparent opacity-85"></div>
+                    
+                    <div class="absolute bottom-5 left-5 right-5">
+                        <div class="px-5 py-3 rounded-2xl bg-forest-card/90 backdrop-blur-md border border-forest-border text-linen text-xs shadow-lg">
+                            <span class="block font-medium text-sm text-linen mb-0.5">Анастасия Шапка</span>
+                            <span class="block text-sage-light/80 text-xs font-light leading-snug">Клиническая психологиня (в процессе) • секс-терапевтка (18+)</span>
                         </div>
                     </div>
                 </div>
             </div>
+
         </section>
 
-        <!-- 2. REQUESTS SECTION (Concrete, clinical & realistic language, zero AI fluff) -->
-        <section id="requests" class="py-14 border-t border-forest-200/80">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
-                <div>
-                    <span class="text-xs uppercase tracking-widest text-forest-600 font-medium">Направления работы</span>
-                    <h2 class="text-2xl sm:text-3xl font-light text-forest-900 mt-1">
-                        С какими запросами <span class="serif-italic text-3xl sm:text-4xl text-forest-700">я работаю</span>
+        <!-- ========================================================
+             3. С ЧЕМ РАБОТАЮ: ТАБЫ (3 КОЛОНКИ ДЛЯ ОБЕИХ ВКЛАДОК)
+             ======================================================== -->
+        <section id="requests" class="space-y-8 scroll-mt-24">
+            
+            <div class="pb-4 border-b border-forest-border/60 flex flex-col sm:flex-row sm:items-end justify-between gap-5">
+                <div class="space-y-1">
+                    <span class="text-xs uppercase tracking-widest text-terracotta font-semibold">Сферы практики</span>
+                    <h2 class="text-2xl sm:text-3xl font-medium text-linen">
+                        С чем я работаю
                     </h2>
-                    <p class="text-sm text-forest-700/80 font-light mt-2 max-w-xl">
-                        Ниже — ориентиры. Если ваш запрос звучит иначе или пока не складывается в четкую формулировку, мы разберем и проясним его на первой встрече.
+                    <p class="text-sm text-sage-light/80 font-light">
+                        Выберите подходящий формат, чтобы увидеть актуальные направления работы
                     </p>
                 </div>
 
-                <!-- Segmented Control Tabs -->
-                <div class="inline-flex p-1 rounded-xl bg-forest-100 border border-forest-200 self-start shrink-0">
-                    <button onclick="switchTab('individual')" id="tab-btn-individual" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all bg-forest-800 text-white shadow-2xs">
-                        Индивидуально
+                <div class="inline-flex items-center p-1.5 rounded-2xl bg-forest-deep border border-forest-border shrink-0 self-start sm:self-auto">
+                    <button id="tab-btn-self" onclick="switchRequestTab('self')" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-terracotta text-white shadow-sm cursor-pointer active:scale-95">
+                        Для себя
                     </button>
-                    <button onclick="switchTab('couples')" id="tab-btn-couples" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-forest-800 hover:text-forest-900">
-                        Парная терапия
-                    </button>
-                    <button onclick="switchTab('sexology')" id="tab-btn-sexology" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all text-forest-800 hover:text-forest-900">
-                        Сексология
+                    <button id="tab-btn-couples" onclick="switchRequestTab('couples')" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-sage-light/80 hover:text-white cursor-pointer active:scale-95">
+                        Для пар и союзов
                     </button>
                 </div>
             </div>
 
-            <!-- Tab 1: Индивидуальная терапия -->
-            <div id="tab-individual" class="tab-content grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="activity" class="w-4 h-4"></i>
+            <!-- Контейнер карточек табов (бесшовный грид-стек) -->
+            <div class="tab-stack-container relative">
+                
+                <!-- ТАБ 1: ДЛЯ СЕБЯ (3 колонки) -->
+                <div id="tab-panel-self" class="tab-stack-panel tab-visible grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border flex flex-col justify-between space-y-4 hover:border-forest-borderLight transition-colors">
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-linen">Отношения с собой</h3>
+                            <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                                Помогаю найти внутренние опоры при <strong class="text-linen font-medium">тревоге, выгорании, постоянном фоновом напряжении</strong> и усталости от контроля. Бережно исследуем самокритику, синдром самозванца, перфекционизм и восстанавливаем контакт с личными ценностями
+                            </p>
+                        </div>
                     </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Эмоциональные состояния и истощение</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Хроническая тревога, фоновое напряжение, апатия, выгорание, потеря сил и интереса к привычной жизни.
-                    </p>
+
+                    <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border flex flex-col justify-between space-y-4 hover:border-forest-borderLight transition-colors">
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta">
+                                <i data-lucide="brain" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-linen">Клинические запросы</h3>
+                            <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                                Оказываю доказательную поддержку взрослым с <strong class="text-linen font-medium">СДВГ, ГТР, ОКР и депрессивными эпизодами</strong>. В работе применяю клинические протоколы ACT, помогая развивать эмоциональную гибкость и саморегуляцию
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border flex flex-col justify-between space-y-4 hover:border-forest-borderLight transition-colors">
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta">
+                                <i data-lucide="heart" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-linen">Сексуальность и тело</h3>
+                            <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                                Безопасная работа со <strong class="text-linen font-medium">снижением влечения, зажимами, дискомфортом и трудностями с оргазмом</strong>. Опираясь на модель двойного контроля, преодолеваем стыд и восстанавливаем доверительный контакт с телом
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="user" class="w-4 h-4"></i>
+                <!-- ТАБ 2: ДЛЯ ПАР И СОЮЗОВ (3 колонки, аккуратные формулировки) -->
+                <div id="tab-panel-couples" class="tab-stack-panel tab-hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border flex flex-col justify-between space-y-4 hover:border-forest-borderLight transition-colors">
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta">
+                                <i data-lucide="repeat" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-linen">Кризисы и эмоциональная связь</h3>
+                            <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                                Помогаю парам и союзам преодолевать циклы непонимания, постоянные конфликты и отчуждение. Опираясь на ЭФТ, учимся распознавать скрытые потребности и восстанавливать ощущение эмоциональной безопасности
+                            </p>
+                        </div>
                     </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Отношение к себе и самокритика</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Жесткие внутренние стандарты, синдром самозванца, чувство вины за отдых, сложности с пониманием своих желаний и границ.
-                    </p>
+
+                    <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border flex flex-col justify-between space-y-4 hover:border-forest-borderLight transition-colors">
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta">
+                                <i data-lucide="flame" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-linen">Сексуальность и интимность</h3>
+                            <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                                Бережная работа при несовпадении сексуальных сценариев, снижении влечения и охлаждении в отношениях. Помогаем открыто и без стыда говорить о желаниях, восстанавливая чувственный контакт и взаимное удовольствие
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border flex flex-col justify-between space-y-4 hover:border-forest-borderLight transition-colors">
+                        <div class="space-y-3">
+                            <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta">
+                                <i data-lucide="compass" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="text-base font-semibold text-linen">Границы и договоренности союзов</h3>
+                            <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                                Поддержка в согласовании правил взаимодействия, распределении ролей и проживании ревности. Работаю с союзами разной конфигурации, помогая выстраивать прозрачные, экологичные и взаимно комфортные соглашения без навязывания нормы
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="compass" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Кризисы и жизненные перемены</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Сложные выборы, расставание, смена профессии или образа жизни, поиск опоры в периоды неопределенности.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="sun" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Устойчивость и опора в быту</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Трудности с переключением после работы, нарушения рутины и отдыха, возвращение к действиям, которые дают ресурс.
-                    </p>
-                </div>
             </div>
 
-            <!-- Tab 2: Парная терапия -->
-            <div id="tab-couples" class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="repeat" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Повторяющиеся конфликты</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Ссоры по одному и тому же сценарию, где каждый чувствует себя неуслышанным, а разговор заходит в тупик.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="unlink" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Отдаление и потеря контакта</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Ощущение, что вы стали «соседями», дефицит эмоциональной близости, тепла и совместности.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
+            <!-- Ограничения практики -->
+            <div class="w-full bg-forest-card rounded-2xl border border-forest-border p-6 sm:p-8 space-y-4 shadow-sm">
+                <div class="flex items-start gap-3.5">
+                    <div class="w-9 h-9 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta shrink-0 mt-0.5">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i>
                     </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Кризисы и нарушение доверия</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Проживание измен, ревности, внешних стрессов, переездов или изменений в семье, решение вопроса о будущем пары.
-                    </p>
+                    <div>
+                        <h3 class="text-sm sm:text-base font-semibold text-linen leading-snug">
+                            В терапии важно, чтобы работа была не только бережной, но и профессионально выстроенной
+                        </h3>
+                        <p class="text-xs sm:text-sm text-sage-light/80 font-light mt-1">
+                            Поэтому есть темы, которые я <span class="text-terracotta font-medium">не беру в работу как основной запрос</span>:
+                        </p>
+                    </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="messages-square" class="w-4 h-4"></i>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2 text-xs sm:text-sm text-sage-light font-light">
+                    <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-forest-deep border border-forest-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0"></span>
+                        <span>Расстройства пищевого поведения (РПП)</span>
                     </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Разница ценностей и правил</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Сложности в договоренностях о быте, бюджете, личном пространстве, границах с родственниками и планах на будущее.
-                    </p>
+                    <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-forest-deep border border-forest-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0"></span>
+                        <span>Нарциссическое и биполярное расстройства (НРЛ, БАР)</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-forest-deep border border-forest-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0"></span>
+                        <span>Расстройства шизофренического спектра</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-forest-deep border border-forest-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0"></span>
+                        <span>Химические и игровые зависимости</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-forest-deep border border-forest-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0"></span>
+                        <span>Высокий суицидальный риск</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-forest-deep border border-forest-border">
+                        <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0"></span>
+                        <span>Насилие и работа с его авторами</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Tab 3: Сексология (индивидуально и для пар) -->
-            <div id="tab-sexology" class="tab-content hidden grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="sliders" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Изменения либидо и разница влечения</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Снижение или отсутствие желания, разная потребность в сексе у партнеров (когда одному нужно чаще, а другому — реже).
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="heart-pulse" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Психогенные трудности</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Тревога ожидания неудачи, трудности с возбуждением или достижением оргазма, дискомфорт (при исключенных медицинских причинах).
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="feather" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Стыд, табу и контакт с телом</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Непринятие своего тела, чувство вины или скованности в сексе, влияние жестких установок на интимную жизнь.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-forest-200/80 hover:border-forest-500/50 transition-all">
-                    <div class="w-8 h-8 rounded-lg bg-forest-100 flex items-center justify-center text-forest-800 mb-3.5">
-                        <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    </div>
-                    <h3 class="font-medium text-forest-900 text-base mb-1.5">Диалог о сексе в паре</h3>
-                    <p class="text-forest-800/75 text-sm font-light leading-relaxed">
-                        Как говорить о своих предпочтениях, фантазиях и границах прямо, бережно и без страха задеть партнера.
-                    </p>
-                </div>
-            </div>
         </section>
 
-        <!-- 3. METHODS SECTION (ACT primary for both, EFT added for couples, Clinical Psychology training noted) -->
-        <section id="methods" class="py-14 border-t border-forest-200/80">
-            <div class="mb-8">
-                <span class="text-xs uppercase tracking-widest text-forest-600 font-medium">Подход и принципы</span>
-                <h2 class="text-2xl sm:text-3xl font-light text-forest-900 mt-1">
-                    Как устроена <span class="serif-italic text-3xl sm:text-4xl text-forest-700">наша работа</span>
+        <!-- ========================================================
+             4. МЕТОДОЛОГИЯ И ПОДХОД
+             ======================================================== -->
+        <section id="method" class="space-y-8 scroll-mt-24">
+            
+            <div class="space-y-2">
+                <span class="text-xs uppercase tracking-widest text-terracotta font-semibold">Доказательная основа</span>
+                <h2 class="text-2xl sm:text-3xl font-medium text-linen">
+                    Как устроен терапевтический процесс
+                </h2>
+                <p class="text-sm text-sage-light/80 font-light max-w-xl">
+                    В работе я опираюсь на доказательные подходы третьей волны КПТ, клиническое понимание психики и бережную этику
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border space-y-3 hover:border-forest-borderLight transition-colors">
+                    <span class="inline-block px-2.5 py-1 rounded-md bg-forest-cardHover text-terracotta text-xs font-semibold">
+                        ACT • Основной подход
+                    </span>
+                    <h3 class="text-base font-semibold text-linen">Терапия принятия и ответственности</h3>
+                    <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                        Мы учимся не тратить силы на изнуряющую борьбу с тяжелыми мыслями и чувствами, а развивать психологическую гибкость и строить насыщенную жизнь в согласии со своими истинными ценностями
+                    </p>
+                </div>
+
+                <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border space-y-3 hover:border-forest-borderLight transition-colors">
+                    <span class="inline-block px-2.5 py-1 rounded-md bg-forest-cardHover text-terracotta text-xs font-semibold">
+                        ЭФТ • Вспомогательный подход
+                    </span>
+                    <h3 class="text-base font-semibold text-linen">Эмоционально-фокусированная терапия</h3>
+                    <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                        В работе с парами и союзами методология ACT дополняется инструментами ЭФТ. Это помогает распознавать негативные циклы взаимодействия и восстанавливать безопасную эмоциональную привязанность
+                    </p>
+                </div>
+
+                <div class="bg-forest-card p-6 sm:p-7 rounded-2xl border border-forest-border space-y-3 hover:border-forest-borderLight transition-colors">
+                    <span class="inline-block px-2.5 py-1 rounded-md bg-forest-cardHover text-terracotta text-xs font-semibold">
+                        Клиническая база
+                    </span>
+                    <h3 class="text-base font-semibold text-linen">Клиническое мышление и фем-оптика</h3>
+                    <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                        Понимание нейробиологии стресса и физиологии интимной сферы в сочетании с фем-оптикой и полным отсутствием гендерных стереотипов, патриархальных установок и навязывания нормы
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ========================================================
+             5. ОБРАЗОВАНИЕ И МЕТОД
+             ======================================================== -->
+        <section id="education" class="space-y-6 scroll-mt-24">
+            
+            <div class="space-y-2">
+                <span class="text-xs uppercase tracking-widest text-terracotta font-semibold">Квалификация</span>
+                <h2 class="text-2xl sm:text-3xl font-medium text-linen">
+                    Образование и метод
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <!-- Card 1: ACT -->
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-forest-200/90 flex flex-col justify-between">
-                    <div>
-                        <div class="inline-block px-2.5 py-1 rounded-md bg-forest-100 text-forest-800 text-xs font-medium mb-4">
-                            ACT • Базовый метод
-                        </div>
-                        <h3 class="font-medium text-forest-900 text-lg mb-2">Терапия принятия и ответственности</h3>
-                        <p class="text-forest-800/80 text-sm font-light leading-relaxed">
-                            Основной метод как в индивидуальной, так и в парной работе. Мы не тратим силы на подавление мыслей и чувств, а развиваем психологическую гибкость: учимся замечать сложные переживания, не проваливаться в них и действовать в опоре на свои ценности.
-                        </p>
+            <!-- 1. Академическая база (друг за другом с плашками справа) -->
+            <div class="bg-forest-card p-6 sm:p-8 rounded-3xl border border-forest-border space-y-6 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
                     </div>
-                    <div class="mt-5 pt-4 border-t border-forest-100 text-xs text-forest-600">
-                        Индивидуальная и парная терапия
-                    </div>
+                    <h3 class="text-lg font-semibold text-linen">Академическая база</h3>
                 </div>
-
-                <!-- Card 2: ACT + EFT in Couples -->
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-forest-200/90 flex flex-col justify-between">
-                    <div>
-                        <div class="inline-block px-2.5 py-1 rounded-md bg-forest-100 text-forest-800 text-xs font-medium mb-4">
-                            ACT + ЭФТ • Работа с парами
+                
+                <div class="space-y-3.5 text-xs sm:text-sm">
+                    <!-- МИП -->
+                    <div class="p-5 rounded-2xl bg-forest-deep border border-forest-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-1">
+                            <p class="text-linen font-medium text-sm sm:text-base">Московский институт психоанализа (МИП)</p>
+                            <p class="text-sage-light/80 font-light leading-relaxed">Клиническая психология • Программа профессиональной переподготовки</p>
+                            <span class="inline-block text-terracotta text-xs font-medium pt-0.5">В процессе обучения (завершение летом 2027 г.)</span>
                         </div>
-                        <h3 class="font-medium text-forest-900 text-lg mb-2">Поведенческая опора и работа с привязанностью</h3>
-                        <p class="text-forest-800/80 text-sm font-light leading-relaxed">
-                            В парной терапии я опираюсь прежде всего на ACT и дополняю его инструментами Эмоционально-фокусированной терапии (ЭФТ). Это помогает не только менять привычные реакции в конфликтах, но и видеть за упреками потребность в безопасности и близости.
-                        </p>
+                        <span class="inline-flex items-center px-3.5 py-1 rounded-full bg-forest-card border border-forest-border text-terracotta text-xs font-medium shrink-0 self-start sm:self-center">
+                            Переподготовка
+                        </span>
                     </div>
-                    <div class="mt-5 pt-4 border-t border-forest-100 text-xs text-forest-600">
-                        Нейтральная позиция терапевта по отношению к обоим партнерам
-                    </div>
-                </div>
 
-                <!-- Card 3: Clinical Base -->
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-forest-200/90 flex flex-col justify-between">
-                    <div>
-                        <div class="inline-block px-2.5 py-1 rounded-md bg-forest-100 text-forest-800 text-xs font-medium mb-4">
-                            Клиническая оптика
+                    <!-- НГТУ -->
+                    <div class="p-5 rounded-2xl bg-forest-deep border border-forest-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-1">
+                            <p class="text-linen font-medium text-sm sm:text-base">Новосибирский государственный технический университет (НГТУ)</p>
+                            <p class="text-sage-light/80 font-light leading-relaxed">Бакалавриат по направлению «Психология»</p>
                         </div>
-                        <h3 class="font-medium text-forest-900 text-lg mb-2">Научная база и системный взгляд</h3>
-                        <p class="text-forest-800/80 text-sm font-light leading-relaxed">
-                            Я работаю в доказательном подходе и сейчас дополнительно обучаюсь на клинического психолога. Учитываю влияние физиологии и нервной системы на ваше состояние, а при необходимости помогаю сориентироваться, когда нужна консультация профильного врача.
-                        </p>
-                    </div>
-                    <div class="mt-5 pt-4 border-t border-forest-100 text-xs text-forest-600">
-                        Регулярные супервизии и интервизии
-                    </div>
-                </div>
-
-                <!-- Card 4: Ethics & Safe Environment -->
-                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-forest-200/90 flex flex-col justify-between">
-                    <div>
-                        <div class="inline-block px-2.5 py-1 rounded-md bg-forest-100 text-forest-800 text-xs font-medium mb-4">
-                            Этика и безопасность
-                        </div>
-                        <h3 class="font-medium text-forest-900 text-lg mb-2">Среда без стигмы и готовых норм</h3>
-                        <p class="text-forest-800/80 text-sm font-light leading-relaxed">
-                            Пространство, свободное от гендерных стереотипов, морализаторства и навязанных представлений о том, какими «должны» быть человек, секс или отношения. С уважением к вашей автономии, жизненному опыту и темпу.
-                        </p>
-                    </div>
-                    <div class="mt-5 pt-4 border-t border-forest-100 text-xs text-forest-600">
-                        Соблюдение профессиональной тайны
+                        <span class="inline-flex items-center px-3.5 py-1 rounded-full bg-forest-card border border-forest-border text-sage-light text-xs font-medium shrink-0 self-start sm:self-center">
+                            Высшее
+                        </span>
                     </div>
                 </div>
             </div>
+
+            <!-- 2. Аккордеон программ повышения квалификации (без надписи "9 программ") -->
+            <details class="group bg-forest-card rounded-2xl border border-forest-border [&_summary::-webkit-details-marker]:hidden">
+                <summary class="flex items-center justify-between p-6 sm:p-7 cursor-pointer text-linen font-semibold text-sm sm:text-base transition-colors hover:text-terracotta select-none">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="award" class="w-5 h-5 text-terracotta shrink-0"></i>
+                        <span>Повышение квалификации и профильные программы</span>
+                    </div>
+                    <span class="w-8 h-8 rounded-full bg-forest-cardHover group-hover:bg-forest-border flex items-center justify-center transition-transform duration-300 group-open:rotate-180">
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-terracotta"></i>
+                    </span>
+                </summary>
+                <div class="p-6 sm:p-7 pt-0 border-t border-forest-border/70 mt-2 text-xs sm:text-sm text-sage-light font-light">
+                    <ul class="space-y-2.5 pt-3">
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Терапия принятия и ответственности (ACT)</strong>, Е. Дашкова, Вконтексте</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Сексология для психологов</strong>, К. Белова, Чистые Когниции</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Системная сексуальная терапия</strong>, М. Травкова, Психодемия</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Терапия принятия и ответственности для пар</strong>, О. Турчинская, Чистые Когниции</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Терапия принятия и ответственности для отношений</strong>, О. Михайлова, И. Розов, Чистые Когниции</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>ACT при социальной тревожности</strong>, О. Михайлова, И. Розов, NEWPSY</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Работа с расставанием в ACT</strong>, О. Турчинская, Чистые Когниции</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Как ACT-терапевту работать с обсессивно-компульсивным расстройством (ОКР)</strong>, О. Турчинская, Чистые Когниции</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-terracotta shrink-0 mt-2"></span>
+                            <span><strong>Эмоционально-фокусированная парная терапия</strong>, Г. Федотова, А. Карцева, IPPSY</span>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- 3. Стандарты безопасности практики (отдельные кнопки-плашки) -->
+            <div class="bg-forest-card p-6 sm:p-8 rounded-3xl border border-forest-border space-y-5 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-forest-cardHover border border-forest-border flex items-center justify-center text-terracotta shrink-0">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-semibold text-linen">Стандарты безопасности практики</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+                    <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-forest-deep border border-forest-border/80 text-sage-light hover:border-forest-borderLight transition-colors">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta shrink-0"></i>
+                        <span>Регулярные супервизии</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-forest-deep border border-forest-border/80 text-sage-light hover:border-forest-borderLight transition-colors">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta shrink-0"></i>
+                        <span>Интервизорские группы</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-forest-deep border border-forest-border/80 text-sage-light hover:border-forest-borderLight transition-colors">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta shrink-0"></i>
+                        <span>Личная психотерапия для профилактики слепых зон в работе при необходимости</span>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-forest-deep border border-forest-border/80 text-sage-light hover:border-forest-borderLight transition-colors">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta shrink-0"></i>
+                        <span>Изучение доказательных гайдлайнов (PubMed) и современной научной литературы</span>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
-        <!-- 4. PRICING & FORMAT SECTION (Sexology included in both Individual & Couples) -->
-        <section id="pricing" class="py-14 border-t border-forest-200/80">
-            <div class="mb-8">
-                <span class="text-xs uppercase tracking-widest text-forest-600 font-medium">Условия работы</span>
-                <h2 class="text-2xl sm:text-3xl font-light text-forest-900 mt-1">
-                    Формат и <span class="serif-italic text-3xl sm:text-4xl text-forest-700">стоимость встреч</span>
+        <!-- ========================================================
+             6. ФОРМАТ ВСТРЕЧ И СТОИМОСТЬ
+             ======================================================== -->
+        <section id="pricing" class="space-y-8 scroll-mt-24">
+            
+            <div class="space-y-2">
+                <span class="text-xs uppercase tracking-widest text-terracotta font-semibold">Прозрачные условия</span>
+                <h2 class="text-2xl sm:text-3xl font-medium text-linen">
+                    Формат встреч и стоимость
                 </h2>
+                <p class="text-sm text-sage-light/80 font-light max-w-xl">
+                    Все консультации проходят онлайн через видеосвязь Zoom
+                </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                <!-- Card 1: Individual (Therapy + Sexology) -->
-                <div class="bg-white p-7 sm:p-8 rounded-2xl border border-forest-200 shadow-2xs flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-4">
-                            <span class="text-xs font-medium uppercase tracking-wider text-forest-600">Один на один</span>
-                            <span class="inline-flex items-center gap-1.5 text-xs bg-forest-100 text-forest-800 px-3 py-1 rounded-full font-medium">
-                                <i data-lucide="video" class="w-3.5 h-3.5"></i> Онлайн (Zoom)
+                <!-- Карточка 1: Индивидуально -->
+                <div class="bg-forest-card p-7 sm:p-8 rounded-3xl border border-forest-border flex flex-col justify-between space-y-6 shadow-xl hover:border-forest-borderLight transition-all duration-300">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-terracotta font-semibold">Индивидуально</span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest-deep border border-forest-border text-sage-light/80 text-xs font-medium">
+                                <i data-lucide="video" class="w-3.5 h-3.5 text-terracotta"></i>
+                                <span>Онлайн (Zoom)</span>
                             </span>
                         </div>
 
-                        <h3 class="text-xl font-medium text-forest-900 mb-1">Индивидуальная консультация</h3>
-                        <p class="text-forest-600 text-sm font-light mb-6">Личная психотерапия или индивидуальная работа с сексологическим запросом</p>
+                        <h3 class="text-xl font-semibold text-linen">Индивидуальная консультация</h3>
+                        <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                            Индивидуальная работа с эмоциональным состоянием, тревогой, выгоранием, самооценкой, кризисами и отношениями с собой и телом
+                        </p>
 
-                        <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-forest-100">
-                            <span id="price-ind-display" class="text-3xl sm:text-4xl font-light text-forest-900">4 000 ₽</span>
-                            <span class="text-forest-600 text-sm">/ <span id="time-ind-display">55 минут</span></span>
+                        <div class="pt-2 pb-4 border-b border-forest-border flex flex-wrap items-baseline gap-2">
+                            <span class="text-3xl sm:text-4xl font-light text-white whitespace-nowrap">5 000 ₽</span>
+                            <span class="text-sage-light/80 text-xs sm:text-sm">/ 50 минут <span class="text-terracotta font-medium">(+5 мин на настройку связи)</span></span>
                         </div>
 
-                        <ul class="space-y-3 text-sm text-forest-800/85 font-light mb-8">
-                            <li class="flex items-start gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-forest-600 shrink-0 mt-0.5"></i>
-                                <span>Индивидуальные психологические и сексологические запросы</span>
+                        <ul class="space-y-2.5 text-xs sm:text-sm text-sage-light font-light">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-terracotta shrink-0"></i>
+                                <span>Метод ACT (Терапия принятия и ответственности)</span>
                             </li>
-                            <li class="flex items-start gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-forest-600 shrink-0 mt-0.5"></i>
-                                <span>Опора на метод ACT и доказательную базу</span>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-terracotta shrink-0"></i>
+                                <span>Бережный, безопасный диалог без критики и давления</span>
                             </li>
-                            <li class="flex items-start gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-forest-600 shrink-0 mt-0.5"></i>
-                                <span>Формат регулярной терапии или фокусного разбора</span>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-terracotta shrink-0"></i>
+                                <span>Фокус на ваших персональных ценностях</span>
                             </li>
                         </ul>
                     </div>
 
-                    <button onclick="openBookingModal('Индивидуальная консультация')" class="w-full bg-forest-800 hover:bg-forest-700 text-white text-sm font-medium py-3.5 rounded-xl transition-all">
-                        Записаться на индивидуальную встречу
+                    <button onclick="openBookingModal('Индивидуальная консультация (5 000 ₽)')" class="w-full bg-terracotta hover:bg-terracotta-hover active:bg-terracotta-active text-white text-sm font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-md hover:-translate-y-0.5 active:scale-98 cursor-pointer">
+                        Записаться индивидуально
                     </button>
                 </div>
 
-                <!-- Card 2: Couples (Couples Therapy + Couples Sexology) -->
-                <div class="bg-forest-800 text-white p-7 sm:p-8 rounded-2xl border border-forest-700 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-4">
-                            <span class="text-xs font-medium uppercase tracking-wider text-forest-200">Для двоих партнеров</span>
-                            <span class="inline-flex items-center gap-1.5 text-xs bg-forest-700 text-forest-100 px-3 py-1 rounded-full font-medium">
-                                <i data-lucide="users" class="w-3.5 h-3.5"></i> Онлайн (Zoom)
+                <!-- Карточка 2: Для пар и союзов -->
+                <div class="bg-forest-card p-7 sm:p-8 rounded-3xl border border-forest-border flex flex-col justify-between space-y-6 shadow-xl hover:border-forest-borderLight transition-all duration-300">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs uppercase tracking-wider text-terracotta font-semibold">Для пар и союзов</span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest-deep border border-forest-border text-sage-light/80 text-xs font-medium">
+                                <i data-lucide="video" class="w-3.5 h-3.5 text-terracotta"></i>
+                                <span>Онлайн (Zoom)</span>
                             </span>
                         </div>
 
-                        <h3 class="text-xl font-medium text-white mb-1">Парная консультация</h3>
-                        <p class="text-forest-200 text-sm font-light mb-6">Терапия отношений или парная работа с сексологическим запросом</p>
+                        <h3 class="text-xl font-semibold text-linen">Парная сессия и терапия союзов</h3>
+                        <p class="text-xs sm:text-sm text-sage-light font-light leading-relaxed">
+                            Терапия отношений, преодоление кризисов, восстановление эмоционального контакта и гармонии в парах и союзах
+                        </p>
 
-                        <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-forest-700">
-                            <span id="price-couple-display" class="text-3xl sm:text-4xl font-light text-white">6 000 ₽</span>
-                            <span class="text-forest-200 text-sm">/ <span id="time-couple-display">80 минут</span></span>
+                        <div class="pt-2 pb-4 border-b border-forest-border flex flex-wrap items-baseline gap-2">
+                            <span class="text-3xl sm:text-4xl font-light text-white whitespace-nowrap">7 000 ₽</span>
+                            <span class="text-sage-light/80 text-xs sm:text-sm">/ 55 минут <span class="text-terracotta font-medium">(+5 мин на настройку связи)</span></span>
                         </div>
 
-                        <ul class="space-y-3 text-sm text-forest-100/90 font-light mb-8">
-                            <li class="flex items-start gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-forest-300 shrink-0 mt-0.5"></i>
-                                <span>Кризисы в отношениях, конфликты, отдаление, парная сексология</span>
+                        <ul class="space-y-2.5 text-xs sm:text-sm text-sage-light font-light">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-terracotta shrink-0"></i>
+                                <span>Интеграция доказательных методов ACT и ЭФТ</span>
                             </li>
-                            <li class="flex items-start gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-forest-300 shrink-0 mt-0.5"></i>
-                                <span>Работа на базе ACT с интеграцией инструментов ЭФТ</span>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-terracotta shrink-0"></i>
+                                <span>Нейтральная, безопасная позиция без обвинений и поиска виноватых</span>
                             </li>
-                            <li class="flex items-start gap-2.5">
-                                <i data-lucide="check" class="w-4 h-4 text-forest-300 shrink-0 mt-0.5"></i>
-                                <span>Увеличенная длительность, чтобы времени хватило обоим</span>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-terracotta shrink-0"></i>
+                                <span>Бережный диалог об интимных и эмоциональных сложностях</span>
                             </li>
                         </ul>
                     </div>
 
-                    <button onclick="openBookingModal('Парная консультация')" class="w-full bg-white hover:bg-forest-100 text-forest-900 text-sm font-medium py-3.5 rounded-xl transition-all">
-                        Записаться на парную встречу
+                    <button onclick="openBookingModal('Сессия для пар и союзов (7 000 ₽)')" class="w-full bg-terracotta hover:bg-terracotta-hover active:bg-terracotta-active text-white text-sm font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-md hover:-translate-y-0.5 active:scale-98 cursor-pointer">
+                        Записаться для пары или союза
                     </button>
                 </div>
 
             </div>
-        </section>
 
-        <!-- 5. ACCORDION FAQ & CREDENTIALS -->
-        <section id="faq" class="py-14 border-t border-forest-200/80">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div class="lg:col-span-4">
-                    <span class="text-xs uppercase tracking-widest text-forest-600 font-medium">Организационные моменты</span>
-                    <h2 class="text-2xl sm:text-3xl font-light text-forest-900 mt-1">
-                        Важные <span class="serif-italic text-3xl sm:text-4xl text-forest-700">детали</span>
-                    </h2>
-                    <p class="text-forest-700/80 text-sm font-light mt-3 leading-relaxed">
-                        Коротко об образовании, первой встрече, правилах переноса и границах моей компетенции.
-                    </p>
+            <!-- Условия бронирования и переноса встреч -->
+            <div class="bg-forest-card p-6 sm:p-8 rounded-2xl border border-forest-border space-y-4">
+                <div class="flex items-center gap-2.5 text-linen font-semibold text-base sm:text-lg">
+                    <i data-lucide="file-check" class="w-5 h-5 text-terracotta"></i>
+                    <span>Условия бронирования и переноса встреч</span>
                 </div>
-
-                <div class="lg:col-span-8 space-y-3">
-                    
-                    <!-- Accordion Item 1: Education -->
-                    <div class="bg-white rounded-2xl border border-forest-200/90 overflow-hidden">
-                        <button onclick="toggleAccordion(1)" class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-forest-50/60 transition-colors">
-                            <span class="font-medium text-forest-900 text-sm sm:text-base">Образование и профессиональная подготовка</span>
-                            <i id="acc-icon-1" data-lucide="plus" class="w-4 h-4 text-forest-600 shrink-0 transition-transform duration-200"></i>
-                        </button>
-                        <div id="acc-content-1" class="hidden px-6 pb-5 text-sm text-forest-800/85 font-light leading-relaxed border-t border-forest-100 pt-3">
-                            <ul class="space-y-2 list-disc list-inside">
-                                <li>Профессиональная подготовка по психологическому консультированию и современной сексологии</li>
-                                <li>В настоящее время прохожу углубленную переподготовку по <strong>клинической психологии</strong></li>
-                                <li>Специализированное обучение терапии принятия и ответственности (ACT) и работе с парами (ACT, ЭФТ)</li>
-                                <li>Личная терапия, регулярные супервизии и интервизии</li>
-                            </ul>
-                        </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-sage-light font-light">
+                    <div class="p-4 rounded-xl bg-forest-deep border border-forest-border/80 space-y-1.5">
+                        <p class="font-semibold text-linen">100% бронирование</p>
+                        <p class="text-xs sm:text-sm text-sage-light/80">
+                            Время закрепляется за вами после полной оплаты не позднее чем за 24 часа до назначенного слота
+                        </p>
                     </div>
 
-                    <!-- Accordion Item 2: First session -->
-                    <div class="bg-white rounded-2xl border border-forest-200/90 overflow-hidden">
-                        <button onclick="toggleAccordion(2)" class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-forest-50/60 transition-colors">
-                            <span class="font-medium text-forest-900 text-sm sm:text-base">Как проходит первая встреча?</span>
-                            <i id="acc-icon-2" data-lucide="plus" class="w-4 h-4 text-forest-600 shrink-0 transition-transform duration-200"></i>
-                        </button>
-                        <div id="acc-content-2" class="hidden px-6 pb-5 text-sm text-forest-800/85 font-light leading-relaxed border-t border-forest-100 pt-3">
-                            Специально готовиться не нужно. На первой сессии мы знакомимся, обсуждаем то, что привело вас в терапию, и намечаем ориентиры работы. Вы сможете понять, насколько вам подходят мой темп и стиль ведения сессии.
-                        </div>
+                    <div class="p-4 rounded-xl bg-forest-deep border border-forest-border/80 space-y-1.5">
+                        <p class="font-semibold text-linen">Бережный перенос</p>
+                        <p class="text-xs sm:text-sm text-sage-light/80">
+                            При отмене сессии оплата в полном объеме переносится на следующую встречу
+                        </p>
                     </div>
 
-                    <!-- Accordion Item 3: Cancellation policy -->
-                    <div class="bg-white rounded-2xl border border-forest-200/90 overflow-hidden">
-                        <button onclick="toggleAccordion(3)" class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-forest-50/60 transition-colors">
-                            <span class="font-medium text-forest-900 text-sm sm:text-base">Правила отмены и переноса сессии</span>
-                            <i id="acc-icon-3" data-lucide="plus" class="w-4 h-4 text-forest-600 shrink-0 transition-transform duration-200"></i>
-                        </button>
-                        <div id="acc-content-3" class="hidden px-6 pb-5 text-sm text-forest-800/85 font-light leading-relaxed border-t border-forest-100 pt-3">
-                            Бесплатный перенос или отмена встречи возможны не позднее чем за <strong>24 часа</strong> до назначенного времени. При отмене менее чем за 24 часа сессия оплачивается полностью — это правило помогает сохранять предсказуемость и защищает время обеих сторон.
-                        </div>
+                    <div class="p-4 rounded-xl bg-forest-deep border border-forest-border/80 space-y-1.5">
+                        <p class="font-semibold text-linen">Спокойный формат</p>
+                        <p class="text-xs sm:text-sm text-sage-light/80">
+                            Сессии проходят онлайн в Zoom. Предусмотрены дополнительные 5 минут для комфортной настройки видео и звука
+                        </p>
                     </div>
-
-                    <!-- Accordion Item 4: Limitations -->
-                    <div class="bg-white rounded-2xl border border-forest-200/90 overflow-hidden">
-                        <button onclick="toggleAccordion(4)" class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-forest-50/60 transition-colors">
-                            <span class="font-medium text-forest-900 text-sm sm:text-base">С какими запросами я не работаю</span>
-                            <i id="acc-icon-4" data-lucide="plus" class="w-4 h-4 text-forest-600 shrink-0 transition-transform duration-200"></i>
-                        </button>
-                        <div id="acc-content-4" class="hidden px-6 pb-5 text-sm text-forest-800/85 font-light leading-relaxed border-t border-forest-100 pt-3">
-                            Я работаю только со взрослыми (18+). Я не беру в работу клиентов с химическими зависимостями в активной фазе и острыми психотическими состояниями. В ситуациях, где требуется медицинская поддержка, я рекомендую проверенных врачей-психиатров.
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
         </section>
 
-        <!-- 6. FINAL CTA & TELEGRAM CHANNEL BLOCK -->
-        <section class="mt-8 bg-forest-800 text-white rounded-3xl p-8 sm:p-12 shadow-sm">
-            <div class="max-w-2xl mx-auto text-center">
-                <span class="text-xs uppercase tracking-widest text-forest-300 font-medium">Связь и запись</span>
-                <h2 class="text-2xl sm:text-4xl font-light text-white mt-2 leading-tight">
-                    Записаться на встречу или <span class="serif-italic text-3xl sm:text-5xl text-forest-200">задать вопрос</span>
+        <!-- ========================================================
+             7. СОЦИАЛЬНЫЙ БЛОК
+             ======================================================== -->
+        <section class="bg-forest-card rounded-3xl border border-forest-border p-8 sm:p-12 text-center space-y-6">
+            <div class="max-w-xl mx-auto space-y-3">
+                <span class="text-xs uppercase tracking-widest text-terracotta font-semibold">Комфортная дистанция</span>
+                <h2 class="text-2xl sm:text-3xl font-medium text-linen">
+                    Останемся на связи
                 </h2>
-                <p class="text-forest-200/90 text-sm sm:text-base font-light mt-3 mb-7 leading-relaxed">
-                    Нажмите кнопку «Записаться», чтобы выбрать формат и перейти в личные сообщения Telegram. А если вы пока просто присматриваетесь — заглядывайте в мой канал.
+                <p class="text-sm text-sage-light font-light leading-relaxed">
+                    Если вы пока не готовы к личной работе, можно остаться на дистанции: читать мои тексты, наблюдать за ходом мысли и постепенно привыкать к пространству
                 </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <button onclick="openBookingModal()" class="w-full sm:w-auto bg-white hover:bg-forest-100 text-forest-900 text-sm font-medium px-7 py-4 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="calendar" class="w-4 h-4"></i>
-                        <span>Записаться на консультацию</span>
-                    </button>
-                    <a id="channel-link-footer" href="https://t.me/" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-forest-700 hover:bg-forest-600 text-white border border-forest-600 text-sm font-medium px-6 py-4 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <span>Телеграм-канал «что под шапкой?»</span>
-                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                    </a>
-                </div>
             </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                
+                <a href="https://t.me/shapka_psy" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-terracotta hover:bg-terracotta-hover active:bg-terracotta-active text-white text-xs sm:text-sm font-semibold px-6 py-4 rounded-2xl shadow-lg shadow-black/30 transition-all duration-200 transform hover:-translate-y-1 flex items-center justify-center gap-3 group active:scale-95 cursor-pointer">
+                    <i data-lucide="send" class="w-4 h-4 text-white"></i>
+                    <span>Telegram-канал «что под шапкой?»</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/90 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </a>
+
+                <a href="https://www.instagram.com/shapka_psy?igsh=MXJhbjd5Ym80eG5xOA%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-forest-deep hover:bg-forest-cardHover active:bg-forest-deep text-white text-xs sm:text-sm font-semibold px-6 py-4 rounded-2xl border-2 border-terracotta/80 hover:border-terracotta shadow-lg shadow-black/30 transition-all duration-200 transform hover:-translate-y-1 flex items-center justify-center gap-3 group active:scale-95 cursor-pointer">
+                    <svg class="w-4 h-4 text-terracotta fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    <span>Instagram</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 text-terracotta group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </a>
+
+            </div>
+
+            <p class="text-[11px] text-sage-light/60 font-light max-w-md mx-auto pt-1">
+                * Деятельность Meta (включая Instagram) признана экстремистской и запрещена на территории РФ.
+            </p>
         </section>
 
     </main>
 
-    <!-- FOOTER -->
-    <footer class="border-t border-forest-200/80 py-8 text-xs text-forest-600">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span>© Анастасия Шапка. Психологическая практика онлайн.</span>
-            <span>ACT • ЭФТ • Сексология</span>
+    <!-- ========================================================
+         8. ПОДВАЛ С ЮРИДИЧЕСКИМИ ССЫЛКАМИ
+         ======================================================== -->
+    <footer class="border-t border-forest-border/80 bg-forest-deep py-10 text-xs text-sage-light relative z-10">
+        <div class="max-w-6xl mx-auto px-5 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <div class="text-center sm:text-left text-linen font-normal">
+                © Анастасия Шапка • Клиническая психологиня и секс-терапевтка
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-6 text-sage-light/80 text-xs">
+                <button onclick="openLegalModal('privacy')" class="hover:text-terracotta transition-colors underline-offset-4 hover:underline cursor-pointer">
+                    Политика конфиденциальности
+                </button>
+                <button onclick="openLegalModal('offer')" class="hover:text-terracotta transition-colors underline-offset-4 hover:underline cursor-pointer">
+                    Публичная оферта
+                </button>
+                <button onclick="openLegalModal('consent')" class="hover:text-terracotta transition-colors underline-offset-4 hover:underline cursor-pointer">
+                    Согласие на обработку ПД
+                </button>
+            </div>
+
         </div>
     </footer>
 
-    <!-- ==========================================
-         BOOKING MODAL (Telegram Message Builder)
-         ========================================== -->
-    <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-forest-900/50 backdrop-blur-xs">
-        <div class="bg-white rounded-3xl border border-forest-200 max-w-md w-full p-6 sm:p-8 shadow-xl relative animate-[fadeIn_0.2s_ease-out]">
-            <button onclick="closeBookingModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-forest-100 hover:bg-forest-200 flex items-center justify-center text-forest-700">
+    <!-- ========================================================
+         МОДАЛЬНОЕ ОКНО ЗАПИСИ (TELEGRAM БЕЗ ЛИШНЕГО ЧЕКБОКСА)
+         ======================================================== -->
+    <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+        <div class="bg-forest-card rounded-3xl border border-forest-border max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
+            
+            <button onclick="closeBookingModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-forest-deep hover:bg-forest-cardHover flex items-center justify-center text-sage-light hover:text-white transition-colors cursor-pointer">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
 
-            <span class="text-xs uppercase tracking-widest text-forest-600 font-medium">Запись на сессию</span>
-            <h3 class="text-2xl font-light text-forest-900 mt-1 mb-2">Написать Анастасии</h3>
-            <p class="text-xs text-forest-700/80 font-light mb-5">
-                Выберите актуальный формат — ниже появится готовый шаблон сообщения для Telegram.
+            <span class="text-xs uppercase tracking-widest text-terracotta font-semibold">Запись на консультацию</span>
+            <h3 class="text-2xl font-bold text-linen mt-1 mb-2">Написать Анастасии</h3>
+            <p class="text-xs text-sage-light font-light mb-5">
+                Выберите формат встречи — мы подготовим первое сообщение и откроем диалог в Telegram
             </p>
 
             <div class="space-y-4">
-                <!-- Format selector -->
+                
                 <div>
-                    <label class="block text-xs font-medium text-forest-800 mb-2">Формат работы:</label>
-                    <div class="grid grid-cols-1 gap-2">
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-forest-200 cursor-pointer hover:bg-forest-50 has-[:checked]:border-forest-800 has-[:checked]:bg-forest-50 transition-all">
-                            <input type="radio" name="session_type" value="Индивидуальная консультация (терапия / сексология)" checked onchange="updatePreviewMessage()" class="accent-forest-800">
-                            <span class="text-sm text-forest-900">Индивидуальная (терапия / сексология)</span>
+                    <label class="block text-xs font-semibold text-linen mb-2">Формат сессии:</label>
+                    <div class="grid grid-cols-1 gap-2.5">
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-forest-border bg-forest-deep cursor-pointer hover:border-terracotta transition-all">
+                            <input type="radio" name="modal_format" value="Индивидуальная консультация (5 000 ₽)" checked onchange="updateTelegramMessage()" class="accent-terracotta cursor-pointer">
+                            <div class="text-xs">
+                                <p class="text-linen font-medium">Индивидуальная консультация</p>
+                                <p class="text-sage-light/80 text-[11px]">50 минут (+5 мин на связь) • 5 000 ₽</p>
+                            </div>
                         </label>
-                        <label class="flex items-center gap-3 p-3 rounded-xl border border-forest-200 cursor-pointer hover:bg-forest-50 has-[:checked]:border-forest-800 has-[:checked]:bg-forest-50 transition-all">
-                            <input type="radio" name="session_type" value="Парная консультация (терапия отношений / сексология)" onchange="updatePreviewMessage()" class="accent-forest-800">
-                            <span class="text-sm text-forest-900">Парная (отношения / парная сексология)</span>
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-forest-border bg-forest-deep cursor-pointer hover:border-terracotta transition-all">
+                            <input type="radio" name="modal_format" value="Сессия для пар и союзов (7 000 ₽)" onchange="updateTelegramMessage()" class="accent-terracotta cursor-pointer">
+                            <div class="text-xs">
+                                <p class="text-linen font-medium">Для пар и союзов</p>
+                                <p class="text-sage-light/80 text-[11px]">55 минут (+5 мин на связь) • 7 000 ₽</p>
+                            </div>
                         </label>
                     </div>
                 </div>
 
-                <!-- Optional short note -->
-                <div>
-                    <label class="block text-xs font-medium text-forest-800 mb-1.5">Коротко о запросе или удобном времени (необязательно)</label>
-                    <input type="text" id="client-note" oninput="updatePreviewMessage()" placeholder="Например: будни первая половина дня" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-forest-200 focus:outline-none focus:border-forest-700 bg-forest-50/50">
-                </div>
-
-                <!-- Generated message preview -->
-                <div class="bg-forest-50 p-3.5 rounded-xl border border-forest-200">
-                    <div class="flex items-center justify-between text-[11px] text-forest-600 mb-1">
-                        <span>Текст сообщения:</span>
-                        <button onclick="copyMessageText()" id="copy-btn-text" class="text-forest-800 font-medium hover:underline">Скопировать текст</button>
+                <!-- Блок предпросмотра сообщения -->
+                <div class="bg-forest-deep p-3.5 rounded-xl border border-forest-border space-y-1.5">
+                    <div class="flex items-center justify-between text-[11px] text-terracotta">
+                        <span class="font-medium">Текст первого сообщения:</span>
+                        <button onclick="copyTgText()" id="copy-status-btn" class="hover:text-white transition-colors cursor-pointer">Скопировать</button>
                     </div>
-                    <p id="telegram-preview-text" class="text-xs text-forest-900 leading-relaxed"></p>
+                    <p id="tg-preview" class="text-xs text-sage-light leading-relaxed font-light"></p>
                 </div>
 
-                <button onclick="proceedToTelegram()" class="w-full bg-forest-800 hover:bg-forest-700 text-white text-sm font-medium py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm">
+                <!-- Кнопка перехода в Telegram -->
+                <button id="tg-submit-btn" onclick="sendToTelegram()" class="w-full bg-terracotta hover:bg-terracotta-hover active:bg-terracotta-active text-white text-sm font-semibold py-3.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-black/30 hover:-translate-y-0.5 active:scale-98 cursor-pointer">
                     <i data-lucide="send" class="w-4 h-4"></i>
-                    <span>Открыть диалог в Telegram</span>
+                    <span>Открыть диалог в Telegram (@shapka_a)</span>
+                </button>
+
+                <!-- Юридическая плашка под кнопкой без лишних чекбоксов -->
+                <p class="text-[11px] text-sage-light/70 text-center leading-snug pt-1">
+                    Нажимая на кнопку, вы принимаете условия <button type="button" onclick="openLegalModal('offer')" class="text-terracotta hover:text-terracotta-hover underline cursor-pointer">Публичной оферты</button> и соглашаетесь с <button type="button" onclick="openLegalModal('privacy')" class="text-terracotta hover:text-terracotta-hover underline cursor-pointer">Политикой конфиденциальности</button>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         МОДАЛЬНОЕ ОКНО ЮРИДИЧЕСКИХ ДОКУМЕНТОВ
+         ======================================================== -->
+    <div id="legal-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-xs">
+        <div class="bg-forest-card rounded-3xl border border-forest-border max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[85vh] flex flex-col">
+            <button onclick="closeLegalModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-forest-deep hover:bg-forest-cardHover flex items-center justify-center text-sage-light hover:text-white transition-colors cursor-pointer">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <h3 id="legal-title" class="text-base sm:text-lg font-bold text-linen mb-4 pr-8 leading-snug"></h3>
+            
+            <div id="legal-content" class="overflow-y-auto text-xs sm:text-sm text-sage-light font-light leading-relaxed space-y-3.5 pr-2">
+                <!-- Контент инжектируется через JS -->
+            </div>
+
+            <div class="pt-5 border-t border-forest-border mt-4 text-right">
+                <button onclick="closeLegalModal()" class="px-5 py-2.5 rounded-xl bg-forest-deep hover:bg-forest-cardHover active:bg-forest-deep text-white text-xs font-semibold transition-colors cursor-pointer">
+                    Закрыть
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ==========================================
-         FLOATING CUSTOMIZER FOR NASTYA
-         ========================================== -->
-    <div class="fixed bottom-4 right-4 z-40">
-        <button onclick="toggleCustomizer()" class="bg-white hover:bg-forest-100 text-forest-900 border border-forest-300 shadow-lg px-4 py-2.5 rounded-full text-xs font-medium flex items-center gap-2 transition-all">
-            <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-forest-700"></i>
-            <span>Настроить контакты и цены</span>
-        </button>
-
-        <div id="customizer-panel" class="hidden absolute bottom-12 right-0 w-80 bg-white rounded-2xl border border-forest-200 shadow-xl p-5 text-xs space-y-3">
-            <div class="flex items-center justify-between border-b border-forest-100 pb-2">
-                <span class="font-semibold text-forest-900">Быстрая настройка данных</span>
-                <button onclick="toggleCustomizer()" class="text-forest-500 hover:text-forest-900">✕</button>
-            </div>
-            <p class="text-[11px] text-forest-600 leading-normal">
-                Настя, здесь можно вписать свой точный ник в Telegram и актуальные цены.
-            </p>
-            <div>
-                <label class="block text-forest-700 mb-1">Твой ник в Telegram (без @):</label>
-                <input type="text" id="cfg-tg" value="shapka_psy" oninput="applyCustomConfig()" class="w-full px-2.5 py-1.5 rounded-lg border border-forest-200 text-forest-900">
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-                <div>
-                    <label class="block text-forest-700 mb-1">Цена (Индив.):</label>
-                    <input type="text" id="cfg-price-ind" value="4 000 ₽" oninput="applyCustomConfig()" class="w-full px-2.5 py-1.5 rounded-lg border border-forest-200 text-forest-900">
-                </div>
-                <div>
-                    <label class="block text-forest-700 mb-1">Цена (Парная):</label>
-                    <input type="text" id="cfg-price-couple" value="6 000 ₽" oninput="applyCustomConfig()" class="w-full px-2.5 py-1.5 rounded-lg border border-forest-200 text-forest-900">
-                </div>
-            </div>
-            <div>
-                <label class="block text-forest-700 mb-1">Ссылка на канал «что под шапкой?»:</label>
-                <input type="text" id="cfg-channel" value="https://t.me/" oninput="applyCustomConfig()" class="w-full px-2.5 py-1.5 rounded-lg border border-forest-200 text-forest-900">
-            </div>
-        </div>
-    </div>
-
+    <!-- ========================================================
+         ИНТЕРАКТИВНЫЕ СКРИПТЫ
+         ======================================================== -->
     <script>
         lucide.createIcons();
 
-        let currentTgUsername = 'shapka_psy';
+        // 1. Бесшовное переключение табов
+        function switchRequestTab(type) {
+            const btnSelf = document.getElementById('tab-btn-self');
+            const btnCouples = document.getElementById('tab-btn-couples');
+            const panelSelf = document.getElementById('tab-panel-self');
+            const panelCouples = document.getElementById('tab-panel-couples');
 
-        // 1. Tabs Logic
-        function switchTab(tabName) {
-            const tabs = ['individual', 'couples', 'sexology'];
-            tabs.forEach(t => {
-                const content = document.getElementById(`tab-${t}`);
-                const btn = document.getElementById(`tab-btn-${t}`);
-                if (t === tabName) {
-                    content.classList.remove('hidden');
-                    content.classList.add('grid');
-                    btn.classList.add('bg-forest-800', 'text-white', 'shadow-2xs');
-                    btn.classList.remove('text-forest-800');
-                } else {
-                    content.classList.add('hidden');
-                    content.classList.remove('grid');
-                    btn.classList.remove('bg-forest-800', 'text-white', 'shadow-2xs');
-                    btn.classList.add('text-forest-800');
-                }
-            });
-        }
+            if (type === 'self') {
+                btnSelf.className = 'px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-terracotta text-white shadow-sm cursor-pointer active:scale-95';
+                btnCouples.className = 'px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-sage-light/80 hover:text-white cursor-pointer active:scale-95';
 
-        // 2. Accordion Logic
-        function toggleAccordion(index) {
-            const content = document.getElementById(`acc-content-${index}`);
-            const icon = document.getElementById(`acc-icon-${index}`);
-            const isHidden = content.classList.contains('hidden');
+                panelCouples.classList.remove('tab-visible');
+                panelCouples.classList.add('tab-hidden');
 
-            if (isHidden) {
-                content.classList.remove('hidden');
-                icon.style.transform = 'rotate(45deg)';
+                panelSelf.classList.remove('tab-hidden');
+                panelSelf.classList.add('tab-visible');
             } else {
-                content.classList.add('hidden');
-                icon.style.transform = 'rotate(0deg)';
+                btnCouples.className = 'px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-terracotta text-white shadow-sm cursor-pointer active:scale-95';
+                btnSelf.className = 'px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-sage-light/80 hover:text-white cursor-pointer active:scale-95';
+
+                panelSelf.classList.remove('tab-visible');
+                panelSelf.classList.add('tab-hidden');
+
+                panelCouples.classList.remove('tab-hidden');
+                panelCouples.classList.add('tab-visible');
             }
+            lucide.createIcons();
         }
 
-        // 3. Booking Modal Logic
-        function openBookingModal(preselectFormat = null) {
+        // 2. Модальное окно записи и Telegram ссылка
+        function openBookingModal(preselect = null) {
             const modal = document.getElementById('booking-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
 
-            if (preselectFormat) {
-                const radios = document.getElementsByName('session_type');
+            if (preselect) {
+                const radios = document.getElementsByName('modal_format');
                 radios.forEach(r => {
-                    if (r.value.toLowerCase().includes(preselectFormat.toLowerCase())) {
+                    if (r.value.includes(preselect) || preselect.includes(r.value.split(' ')[0])) {
                         r.checked = true;
                     }
                 });
             }
-            updatePreviewMessage();
+            updateTelegramMessage();
         }
 
         function closeBookingModal() {
@@ -757,70 +940,222 @@
             modal.classList.remove('flex');
         }
 
-        function updatePreviewMessage() {
-            const selectedRadio = document.querySelector('input[name="session_type"]:checked');
-            const format = selectedRadio ? selectedRadio.value : 'Индивидуальная консультация';
-            const note = document.getElementById('client-note').value.trim();
+        function updateTelegramMessage() {
+            const selectedRadio = document.querySelector('input[name="modal_format"]:checked');
+            const format = selectedRadio ? selectedRadio.value : 'Индивидуальная консультация (5 000 ₽)';
 
-            let message = `Здравствуйте, Анастасия! Хочу записаться на консультацию: ${format.toLowerCase()}.`;
-            if (note) {
-                message += ` Дополнительно: ${note}.`;
-            }
-            message += ` Подскажите, пожалуйста, какие есть ближайшие свободные слоты?`;
-
-            document.getElementById('telegram-preview-text').textContent = message;
+            let message = `Здравствуйте, Анастасия! Хочу записаться на консультацию (${format}). Подскажите, пожалуйста, как я могу это сделать?`;
+            document.getElementById('tg-preview').textContent = message;
         }
 
-        function copyMessageText() {
-            const text = document.getElementById('telegram-preview-text').textContent;
-            const tempInput = document.createElement('textarea');
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
+        function copyTgText() {
+            const text = document.getElementById('tg-preview').textContent;
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
             document.execCommand('copy');
-            document.body.removeChild(tempInput);
+            document.body.removeChild(temp);
 
-            const copyBtn = document.getElementById('copy-btn-text');
-            copyBtn.textContent = 'Скопировано ✓';
-            setTimeout(() => { copyBtn.textContent = 'Скопировать текст'; }, 2000);
+            const btn = document.getElementById('copy-status-btn');
+            btn.textContent = 'Скопировано ✓';
+            setTimeout(() => { btn.textContent = 'Скопировать'; }, 2000);
         }
 
-        function proceedToTelegram() {
-            const text = encodeURIComponent(document.getElementById('telegram-preview-text').textContent);
-            const cleanUsername = currentTgUsername.replace('@', '').trim();
-            window.open(`https://t.me/${cleanUsername}?text=${text}`, '_blank');
+        function sendToTelegram() {
+            const text = encodeURIComponent(document.getElementById('tg-preview').textContent);
+            window.open(`https://t.me/shapka_a?text=${text}`, '_blank');
         }
 
-        // 4. Photo Upload Preview
-        function handlePhotoUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('therapist-photo').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+        // 3. Полные тексты юридических документов из документов Анастасии
+        const legalTexts = {
+            privacy: {
+                title: 'ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ ПЕРСОНАЛЬНЫХ ДАННЫХ',
+                body: `
+                    <p class="font-semibold text-linen">1. ОБЩИЕ ПОЛОЖЕНИЯ</p>
+                    <p>1.1. Настоящая Политика конфиденциальности персональных данных (далее — Политика) разработана в соответствии с Федеральным законом от 27.07.2006 №152-ФЗ «О персональных данных» и иными нормативными актами РФ.</p>
+                    <p>1.2. Политика регулирует порядок обработки и защиты персональных данных пользователей сайта, находящегося в управлении самозанятой Шапки Анастасии Сергеевны (ИНН 223403144270).</p>
+                    <p>1.3. Использование Сайта и/или передача персональных данных через иные каналы (включая формы записи, мессенджеры и email) означает согласие пользователя с данной Политикой.</p>
+                    
+                    <p class="font-semibold text-linen pt-2">2. ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ</p>
+                    <p>2.1. <strong>Персональные данные</strong> — информация, относящаяся к прямо или косвенно определяемому лицу.</p>
+                    <p>2.2. <strong>Оператор</strong> — Шапка Анастасия Сергеевна, самозанятая.</p>
+                    <p>2.3. <strong>Обработка персональных данных</strong> — любые действия с ПД: сбор, запись, систематизация, накопление, хранение, уточнение, использование, передача, обезличивание, блокирование, удаление, уничтожение.</p>
+                    <p>2.4. <strong>Пользователь</strong> — любое лицо, посетившее сайт и/или использующее услуги Оператора.</p>
+
+                    <p class="font-semibold text-linen pt-2">3. ПРИНЦИПЫ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</p>
+                    <p>3.1. Законность, справедливость и прозрачность.</p>
+                    <p>3.2. Обработка ограничивается достижением конкретных, заранее определённых и законных целей.</p>
+                    <p>3.3. Не допускается объединение баз данных с несовместимыми целями обработки.</p>
+                    <p>3.4. Персональные данные должны быть актуальными, точными и достаточными для целей обработки.</p>
+
+                    <p class="font-semibold text-linen pt-2">4. СОБИРАЕМЫЕ ДАННЫЕ</p>
+                    <p>4.1. Оператор может собирать следующие данные:<br>
+                    — фамилия, имя;<br>
+                    — адрес электронной почты;<br>
+                    — ник в мессенджере (например, Telegram);<br>
+                    — номер телефона;<br>
+                    — иные сведения, предоставленные добровольно.</p>
+                    <p>4.2. Также автоматически могут собираться технические данные: IP-адрес, cookies, сведения о браузере и устройстве.</p>
+
+                    <p class="font-semibold text-linen pt-2">5. ЦЕЛИ СБОРА ПЕРСОНАЛЬНЫХ ДАННЫХ</p>
+                    <p>5.1. Обеспечение записи на консультацию.<br>
+                    5.2. Идентификация пользователя.<br>
+                    5.3. Обратная связь.<br>
+                    5.4. Предоставление информационной поддержки.<br>
+                    5.5. Исполнение обязательств по оферте/договору.</p>
+
+                    <p class="font-semibold text-linen pt-2">6. ПРАВА ПОЛЬЗОВАТЕЛЯ</p>
+                    <p>6.1. Получение информации о своих ПД.<br>
+                    6.2. Уточнение, блокирование или удаление ПД.<br>
+                    6.3. Отзыв согласия путем направления уведомления по email.</p>
+
+                    <p class="font-semibold text-linen pt-2">7. ОБРАБОТКА ПЕРСОНАЛЬНЫХ ДАННЫХ</p>
+                    <p>7.1. Оператор имеет право обрабатывать ПД с использованием автоматизированных средств и без них.<br>
+                    7.2. Передача ПД третьим лицам не осуществляется, за исключением случаев, предусмотренных законом РФ.<br>
+                    7.3. Доступ к ПД имеет только Оператор.</p>
+
+                    <p class="font-semibold text-linen pt-2">8. СРОК ХРАНЕНИЯ ПЕРСОНАЛЬНЫХ ДАННЫХ</p>
+                    <p>8.1. Персональные данные хранятся в течение 3 лет с момента последнего взаимодействия или до отзыва согласия.</p>
+
+                    <p class="font-semibold text-linen pt-2">9. ИЗМЕНЕНИЕ ПОЛИТИКИ</p>
+                    <p>9.1. Оператор может обновлять Политику без согласия Пользователя, размещая новую редакцию на сайте.</p>
+
+                    <p class="font-semibold text-linen pt-2">10. ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</p>
+                    <p>10.1. Контактная информация Оператора размещается в разделе «Контакты» сайта и в документах, касающихся обработки ПД.<br>
+                    10.2. Оператор не несет ответственности за сайты третьих лиц, ссылки на которые могут быть размещены на Сайте.<br>
+                    10.3. Настоящая редакция действует с момента размещения и действует бессрочно до ее замены новой.</p>
+
+                    <div class="p-3.5 rounded-xl bg-forest-deep border border-forest-border mt-3 text-xs text-sage-light/90 space-y-1">
+                        <strong class="text-linen font-semibold">11. КОНТАКТЫ ОПЕРАТОРА</strong><br>
+                        Самозанятая: Шапка Анастасия Сергеевна<br>
+                        ИНН: 223403144270<br>
+                        Email: kor.a.11@yandex.ru<br>
+                        Оператор зарегистрирован в Реестре операторов персональных данных Роскомнадзора.<br>
+                        Регистрационный номер: 78-25-149968, дата внесения: 31.05.2025.<br>
+                        Ссылка на реестр: <a href="https://pd.rkn.gov.ru/operators-registry" target="_blank" class="text-terracotta underline">pd.rkn.gov.ru/operators-registry</a>
+                    </div>
+                `
+            },
+            offer: {
+                title: 'ПУБЛИЧНАЯ ОФЕРТА НА ОКАЗАНИЕ УСЛУГ ПСИХОЛОГИЧЕСКОГО КОНСУЛЬТИРОВАНИЯ',
+                body: `
+                    <p>Настоящая Публичная оферта (далее — Оферта) является официальным предложением самозанятой Шапки Анастасии Сергеевны, ИНН 223403144270, (далее — Исполнитель), заключить договор на оказание услуг психологического консультирования на изложенных ниже условиях.</p>
+                    
+                    <p class="font-semibold text-linen pt-2">1. ОБЩИЕ ПОЛОЖЕНИЯ</p>
+                    <p>1.1. Настоящая Оферта опубликована в сети Интернет.<br>
+                    1.2. Акцепт (принятие) Оферты означает полное и безоговорочное согласие Заказчика с её условиями. Акцептом считается:<br>
+                    — оформление записи на консультацию любым способом (через сайт, мессенджеры, e-mail);<br>
+                    — осуществление оплаты услуг.</p>
+
+                    <p class="font-semibold text-linen pt-2">2. ПРЕДМЕТ ДОГОВОРА</p>
+                    <p>2.1. Исполнитель обязуется оказать Заказчику услуги психологического консультирования в онлайн-формате, а Заказчик — оплатить такие услуги.</p>
+
+                    <p class="font-semibold text-linen pt-2">3. ПОРЯДОК ОКАЗАНИЯ УСЛУГ</p>
+                    <p>3.1. Услуги оказываются дистанционно через видеосвязь (в основном через Zoom, по предварительной договорённости — через Контур.Толк и др.).<br>
+                    3.2. Переписка может использоваться только как вспомогательный канал для организации консультации, не является способом оказания услуг.<br>
+                    3.3. Дата и время согласовываются индивидуально. При необходимости отмены или переноса сессии стороны договариваются о новом времени. Условия переноса и возможного зачёта оплаты обсуждаются индивидуально.</p>
+
+                    <p class="font-semibold text-linen pt-2">4. ПРАВА И ОБЯЗАННОСТИ СТОРОН</p>
+                    <p>4.1. <strong>Исполнитель обязуется:</strong><br>
+                    — сохранять конфиденциальность сведений, полученных от Заказчика;<br>
+                    — соблюдать нормы профессиональной этики.<br>
+                    4.2. <strong>Заказчик обязуется:</strong><br>
+                    — предоставлять достоверные данные при записи;<br>
+                    — соблюдать договорённости о времени сессии.<br>
+                    4.3. Обе стороны — Заказчик и Исполнитель — обязуются не осуществлять аудио- или видеозапись консультаций без предварительного согласия другой стороны.</p>
+
+                    <p class="font-semibold text-linen pt-2">5. ОПЛАТА УСЛУГ</p>
+                    <p>5.1. Стоимость и способы оплаты указываются на сайте, в сообщениях или в индивидуальной переписке.<br>
+                    5.2. Оплата производится до начала консультации. Факт оплаты подтверждает согласие с условиями настоящей Оферты.</p>
+
+                    <p class="font-semibold text-linen pt-2">6. ОТКАЗ ОТ ОТВЕТСТВЕННОСТИ</p>
+                    <p>6.1. Исполнитель не несёт ответственности за интерпретации, принятые решения и действия Заказчика вне рамок сессии.<br>
+                    6.2. Консультирование не заменяет медицинскую или психиатрическую помощь.</p>
+
+                    <p class="font-semibold text-linen pt-2">7. СРОК ДЕЙСТВИЯ ОФЕРТЫ</p>
+                    <p>7.1. Оферта вступает в силу с момента её размещения и действует бессрочно до момента отзыва.<br>
+                    7.2. Исполнитель вправе вносить изменения в Оферту без предварительного уведомления. Новая редакция публикуется на сайте.</p>
+
+                    <p class="font-semibold text-linen pt-2">8. ПЕРСОНАЛЬНЫЕ ДАННЫЕ</p>
+                    <p>8.1. Заказчик даёт согласие на обработку персональных данных в соответствии с Федеральным законом №152-ФЗ от 27.07.2006 г.<br>
+                    8.2. Согласие оформляется до оказания услуги. Текст согласия размещён по ссылке и доступен для ознакомления при записи через Google Календарь.<br>
+                    8.3. Подтверждением согласия является действие Заказчика по записи на сессию, а также явка на консультацию.</p>
+
+                    <div class="p-3.5 rounded-xl bg-forest-deep border border-forest-border mt-3 text-xs text-sage-light/90 space-y-1">
+                        <strong class="text-linen font-semibold">9. РЕКВИЗИТЫ</strong><br>
+                        Исполнитель: Шапка Анастасия Сергеевна<br>
+                        ИНН: 223403144270<br>
+                        Email: kor.a.11@yandex.ru<br>
+                        Дата публикации: 26.05.2026
+                    </div>
+                `
+            },
+            consent: {
+                title: 'СОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ',
+                body: `
+                    <p class="text-sage-light/80">(в соответствии с Федеральным законом №152-ФЗ от 27.07.2006 г.)</p>
+                    <p>Я, [ФИО клиента], добровольно, своей волей и в своем интересе, подтверждаю согласие на обработку моих персональных данных самозанятой специалисткой Шапкой Анастасией Сергеевной, осуществляющей профессиональную деятельность в сфере психологического консультирования.</p>
+
+                    <p class="font-semibold text-linen pt-2">1. Категории обрабатываемых персональных данных:</p>
+                    <p>• фамилия, имя;<br>
+                    • адрес электронной почты;<br>
+                    • никнейм/логин в мессенджере (Telegram);<br>
+                    • номер телефона;<br>
+                    • иные сведения, добровольно предоставленные мной в процессе переписки или консультации (включая информацию о психологическом состоянии, особенностях личности, фактах биографии и пр.).</p>
+
+                    <p class="font-semibold text-linen pt-2">2. Цели обработки персональных данных:</p>
+                    <p>• организация записи на консультации;<br>
+                    • проведение онлайн-консультаций;<br>
+                    • ведение профессиональной клиентской документации;<br>
+                    • коммуникация в рамках оказания услуги.</p>
+
+                    <p class="font-semibold text-linen pt-2">3. Способы обработки:</p>
+                    <p>• сбор, запись, систематизация, накопление, хранение, уточнение, использование, блокирование, удаление и уничтожение данных;<br>
+                    • с использованием автоматизированных средств (мессенджеры, Google-документы, электронная почта).</p>
+
+                    <p class="font-semibold text-linen pt-2">4. Условия хранения и доступа:</p>
+                    <p>• данные хранятся в электронном виде на защищенных серверах (Google, Telegram и др.);<br>
+                    • доступ к данным имеет только Шапка Анастасия Сергеевна;<br>
+                    • данные не передаются третьим лицам без отдельного письменного согласия.</p>
+
+                    <p class="font-semibold text-linen pt-2">5. Срок хранения:</p>
+                    <p>• персональные данные хранятся не более 3 лет после завершения взаимодействия, если иное не согласовано дополнительно.</p>
+
+                    <p class="font-semibold text-linen pt-2">6. Отзыв согласия:</p>
+                    <p>• согласие может быть отозвано в любой момент путем направления запроса в мессенджере или по электронной почте kor.a.11@yandex.ru.</p>
+
+                    <p class="font-semibold text-linen pt-2">7. Прочее:</p>
+                    <p>• ознакомление с настоящим согласием до записи на приём считается выражением согласия в форме действия (п.4 ст. 9 Федерального закона №152-ФЗ);<br>
+                    • согласие предоставляется бессрочно до момента отзыва.</p>
+                `
+            }
+        };
+
+        function openLegalModal(type) {
+            const modal = document.getElementById('legal-modal');
+            const data = legalTexts[type];
+            if (!data) return;
+
+            document.getElementById('legal-title').textContent = data.title;
+            document.getElementById('legal-content').innerHTML = data.body;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
-        // 5. Customizer Panel
-        function toggleCustomizer() {
-            const panel = document.getElementById('customizer-panel');
-            panel.classList.toggle('hidden');
+        function closeLegalModal() {
+            const modal = document.getElementById('legal-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
-        function applyCustomConfig() {
-            currentTgUsername = document.getElementById('cfg-tg').value || 'shapka_psy';
-            document.getElementById('price-ind-display').textContent = document.getElementById('cfg-price-ind').value;
-            document.getElementById('price-couple-display').textContent = document.getElementById('cfg-price-couple').value;
-
-            const channelUrl = document.getElementById('cfg-channel').value || 'https://t.me/';
-            document.getElementById('channel-link-footer').href = channelUrl;
-        }
-
-        document.getElementById('booking-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeBookingModal();
+        window.addEventListener('click', (e) => {
+            const bookingModal = document.getElementById('booking-modal');
+            const legalModal = document.getElementById('legal-modal');
+            if (e.target === bookingModal) closeBookingModal();
+            if (e.target === legalModal) closeLegalModal();
         });
     </script>
 </body>
-    
 </html>
